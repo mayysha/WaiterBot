@@ -2,22 +2,21 @@
   (:requirements :typing :action-costs :strips :conditional-effects :negative-preconditions)
   (:types
     location target locatable - object
-    waiter food - locatable
-    waiter money - locatable
+    waiter collectable - locatable
     capacity-number - object
   )
 
   (:predicates
-    (road ?l1 ?l2 - location)
+    (route ?l1 ?l2 - location)
     (at ?x - locatable ?v - location)
-    (in ?x - food  ?v - waiter)
+    (in ?x - collectable  ?v - waiter)
     
     (capacity ?v - waiter ?s1 - capacity-number)
     (capacity-predecessor ?s1 ?s2 - capacity-number)
   )
 
   (:functions
-    (road-length ?l1 ?l2 - location) - number
+    (table-distance ?l1 ?l2 - location) - number
     (total-cost) - number
   )
 
@@ -25,17 +24,17 @@
     :parameters (?v - waiter ?l1 ?l2 - location)
     :precondition (and
       (at ?v ?l1)
-      (road ?l1 ?l2)
+      (route ?l1 ?l2)
     )
     :effect (and
       (not (at ?v ?l1))
       (at ?v ?l2)
-      (increase (total-cost) (road-length ?l1 ?l2))
+      (increase (total-cost) (table-distance ?l1 ?l2))
     )
   )
 
   (:action pick-up
-    :parameters (?v - waiter ?l - location ?p - food ?s1 ?s2 - capacity-number)
+    :parameters (?v - waiter ?l - location ?p - collectable ?s1 ?s2 - capacity-number)
     :precondition (and
       (at ?v ?l)
       (at ?p ?l)
@@ -52,7 +51,7 @@
   )
 
   (:action serve
-    :parameters (?v - waiter ?l - location ?p - food ?s1 ?s2 - capacity-number)
+    :parameters (?v - waiter ?l - location ?p - collectable ?s1 ?s2 - capacity-number)
     :precondition (and
       (at ?v ?l)
       (in ?p ?v)
