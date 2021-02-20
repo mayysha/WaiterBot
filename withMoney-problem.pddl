@@ -1,7 +1,6 @@
 (define (problem food-delivery-restaurant)
  (:domain food_delivery)
  (:objects
-
   counter - location
   table-1 - location
   table-2 - location
@@ -25,7 +24,7 @@
   coffee - collectable
   cake - collectable
   steak - collectable 
-   rice2 - collectable
+  rice2 - collectable
   soup2 - collectable
   friedrice2 - collectable
   juice2 - collectable
@@ -34,16 +33,16 @@
   steak2 - collectable
   bill - collectable
   tips - collectable
-  capacity-0 - capacity-number
-  capacity-1 - capacity-number
-  capacity-2 - capacity-number
-  capacity-3 - capacity-number
+  hand-0 - hand-number
+  hand-1 - hand-number
+  hand-2 - hand-number
+  hand-3 - hand-number
  )
  (:init
   (= (total-cost) 0)
-  (capacity-predecessor capacity-0 capacity-1)
-  (capacity-predecessor capacity-1 capacity-2)
-  (capacity-predecessor capacity-2 capacity-3)
+  (hand-predecessor hand-0 hand-1)
+  (hand-predecessor hand-1 hand-2)
+  (hand-predecessor hand-2 hand-3)
   (route table-4 table-2)
   (= (table-distance table-4 table-2) 24)
   (route table-2 table-4)
@@ -133,11 +132,11 @@
   (at waiter1 counter)
   (at waiter2 counter)
   (at waiter3 counter)
-(at bill table-4)
-(at tips table-11)
-  (capacity waiter1 capacity-2)
-  (capacity waiter2 capacity-2)
-  (capacity waiter3 capacity-2)
+  (at bill table-4)
+  (at tips table-11)
+  (hand waiter1 hand-2)
+  (hand waiter2 hand-2)
+  (hand waiter3 hand-2)
  )
  (:goal (and
   (at rice table-4)

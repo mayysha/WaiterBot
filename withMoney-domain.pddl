@@ -1,18 +1,17 @@
 (define (domain food_delivery)
-  (:requirements :typing :action-costs :strips :conditional-effects :negative-preconditions)
+  (:requirements :typing :action-costs :strips :negative-preconditions)
   (:types
     location target locatable - object
     waiter collectable - locatable
-    capacity-number - object
+    hand-number - object
   )
 
   (:predicates
     (route ?l1 ?l2 - location)
-    (at ?x - locatable ?v - location)
-    (in ?x - collectable  ?v - waiter)
-    
-    (capacity ?v - waiter ?s1 - capacity-number)
-    (capacity-predecessor ?s1 ?s2 - capacity-number)
+    (at ?x - locatable ?w - location)
+    (pick ?x - collectable  ?w - waiter)
+    (hand ?w - waiter ?h1 - hand-number)
+    (hand-predecessor ?h1 ?h2 - hand-number)
   )
 
   (:functions
@@ -21,52 +20,49 @@
   )
 
   (:action walk
-    :parameters (?v - waiter ?l1 ?l2 - location)
+    :parameters (?w - waiter ?l1 ?l2 - location)
     :precondition (and
-      (at ?v ?l1)
+      (at ?w ?l1)
       (route ?l1 ?l2)
     )
     :effect (and
-      (not (at ?v ?l1))
-      (at ?v ?l2)
+      (not (at ?w ?l1))
+      (at ?w ?l2)
       (increase (total-cost) (table-distance ?l1 ?l2))
     )
   )
 
   (:action pick-up
-    :parameters (?v - waiter ?l - location ?p - collectable ?s1 ?s2 - capacity-number)
+    :parameters (?w - waiter ?l - location ?c - collectable ?h1 ?h2 - hand-number)
     :precondition (and
-      (at ?v ?l)
-      (at ?p ?l)
-      (capacity-predecessor ?s1 ?s2)
-      (capacity ?v ?s2)
+      (at ?w ?l)
+      (at ?c ?l)
+      (hand-predecessor ?h1 ?h2)
+      (hand ?w ?h2)
     )
     :effect (and
-      (not (at ?p ?l))
-      (in ?p ?v)
-      (capacity ?v ?s1)
-      (not (capacity ?v ?s2))
+      (not (at ?c ?l))
+      (pick ?c ?w)
+      (hand ?w ?h1)
+      (not (hand ?w ?h2))
       (increase (total-cost) 1)
     )
   )
 
   (:action serve
-    :parameters (?v - waiter ?l - location ?p - collectable ?s1 ?s2 - capacity-number)
+    :parameters (?w - waiter ?l - location ?c - collectable ?h1 ?h2 - hand-number)
     :precondition (and
-      (at ?v ?l)
-      (in ?p ?v)
-      (capacity-predecessor ?s1 ?s2)
-      (capacity ?v ?s1)
+      (at ?w ?l)
+      (pick ?c ?w)
+      (hand-predecessor ?h1 ?h2)
+      (hand ?w ?h1)
     )
     :effect (and
-      (not (in ?p ?v))
-      (at ?p ?l)
-      (capacity ?v ?s2)
-      (not (capacity ?v ?s1))
+      (not (pick ?c ?w))
+      (at ?c ?l)
+      (hand ?w ?h2)
+      (not (hand ?w ?h1))
       (increase (total-cost) 1)
     )
   )
-
-  
-
 )
