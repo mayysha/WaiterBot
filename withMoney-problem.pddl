@@ -16,7 +16,6 @@
   table-12 - location
   waiter1 - waiter
   waiter2 - waiter
-  waiter3 - waiter
   rice - collectable
   soup - collectable
   friedrice - collectable
@@ -33,16 +32,13 @@
   steak2 - collectable
   bill - collectable
   tips - collectable
-  hand-0 - hand-number
-  hand-1 - hand-number
-  hand-2 - hand-number
-  hand-3 - hand-number
+  rightHand - hand-number
+  leftHand - hand-number
+
  )
  (:init
   (= (total-cost) 0)
-  (hand-predecessor hand-0 hand-1)
-  (hand-predecessor hand-1 hand-2)
-  (hand-predecessor hand-2 hand-3)
+  (hand-sequence rightHand leftHand)
   (route table-4 table-2)
   (= (table-distance table-4 table-2) 24)
   (route table-2 table-4)
@@ -131,12 +127,10 @@
   (at steak2 counter)
   (at waiter1 counter)
   (at waiter2 counter)
-  (at waiter3 counter)
   (at bill table-4)
   (at tips table-11)
-  (hand waiter1 hand-2)
-  (hand waiter2 hand-2)
-  (hand waiter3 hand-2)
+  (hand waiter1 leftHand)
+  (hand waiter2 leftHand)
  )
  (:goal (and
   (at rice table-4)
@@ -146,7 +140,6 @@
   (at juice table-5)
   (at cake table-7)
   (at coffee table-9)
-
   (at rice2 table-5)
   (at soup2 table-1)
   (at friedrice2 table-12)
@@ -156,7 +149,6 @@
   (at coffee2 table-10)
   (at waiter1 counter)
   (at waiter2 counter)
-  (at waiter3 counter)
   (at tips counter)
   (at bill counter)
  ))
